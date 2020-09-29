@@ -1,7 +1,8 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export const BooksContext = createContext();
+const BooksStateContext = React.createContext();
+const BooksDispatchContext = React.createContext();
 
 const bookReducer = (state, action) => {
   switch (action.type) {
@@ -23,21 +24,41 @@ const bookReducer = (state, action) => {
 };
 
 function BooksContextProvider(props) {
-  const [books, dispatch] = useReducer(bookReducer, [], () => {
+  const [books, dispatch] = React.useReducer(bookReducer, [], () => {
     const localData = localStorage.getItem("books");
 
     return localData ? JSON.parse(localData) : [];
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     localStorage.setItem("books", JSON.stringify(books));
   }, [books]);
 
   return (
-    <BooksContext.Provider value={{ books, dispatch }}>
-      {props.children}
-    </BooksContext.Provider>
+    <BooksStateContext.Provider value={books}>
+      <BooksDispatchContext.Provider value={dispatch}>
+        {props.children}
+      </BooksDispatchContext.Provider>
+    </BooksStateContext.Provider>
   );
 }
 
-export default BooksContextProvider;
+function useBooksState() {
+  const context = React.useContext(BooksStateContext);
+
+  if (context === undefined) {
+    throw new Error("useBooksState must be used within a BooksProvider");
+  }
+  return context;
+}
+
+function useBooksDispatch() {
+  const context = React.useContext(BooksDispatchContext);
+
+  if (context === undefined) {
+    throw new Error("useBooksDispatch must be used within a CountProvider");
+  }
+  return context;
+}
+
+export { BooksContextProvider, useBooksState, useBooksDispatch };

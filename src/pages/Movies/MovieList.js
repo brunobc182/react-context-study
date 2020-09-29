@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { MoviesContext } from "../../contexts/";
+import { useMoviesState } from "../../contexts/";
 import { MovieDetails } from "./";
 
 const MovieList = () => {
-  const { movies } = useContext(MoviesContext);
+  const movies = useMoviesState();
   const history = useHistory();
 
   function navigateToMovieForm() {

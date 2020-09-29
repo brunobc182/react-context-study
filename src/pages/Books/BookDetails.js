@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
-import { BooksContext } from "../../contexts";
+import React from "react";
+import { useBooksDispatch } from "../../contexts";
 
 const BookDetails = ({ book }) => {
-  const { dispatch } = useContext(BooksContext);
-
+  const dispatch = useBooksDispatch();
   return (
     <li
       onClick={() =>

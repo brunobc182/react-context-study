@@ -1,5 +1,10 @@
 export {
-  default as MoviesContextProvider,
-  MoviesContext,
+  MoviesContextProvider,
+  useMoviesDispatch,
+  useMoviesState,
 } from "./MoviesContext";
-export { default as BooksContextProvider, BooksContext } from "./BooksContext";
+export {
+  BooksContextProvider,
+  useBooksDispatch,
+  useBooksState,
+} from "./BooksContext";

@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { BooksContext } from "../../contexts";
+import { useBooksState } from "../../contexts";
 import { BookDetails } from ".";
 
 const BookList = () => {
-  const { books } = useContext(BooksContext);
+  const books = useBooksState();
   const history = useHistory();
 
   function navigateToBookForm() {

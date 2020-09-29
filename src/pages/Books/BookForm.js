@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { BooksContext } from "../../contexts";
+import { useBooksDispatch } from "../../contexts";
 
 const BookForm = () => {
-  const { dispatch } = useContext(BooksContext);
+  const dispatch = useBooksDispatch();
   const [name, setName] = useState("");
   const history = useHistory();
 

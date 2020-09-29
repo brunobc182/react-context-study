@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { MoviesContext } from "../../contexts";
+import { useMoviesDispatch } from "../../contexts";
 
 const MovieForm = () => {
-  const { dispatch } = useContext(MoviesContext);
+  const dispatch = useMoviesDispatch();
   const [name, setName] = useState("");
   const history = useHistory();
 

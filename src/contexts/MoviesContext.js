@@ -1,7 +1,8 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export const MoviesContext = createContext();
+const MoviesStateContext = React.createContext();
+const MoviesDispatchContext = React.createContext();
 
 const movieReducer = (state, action) => {
   switch (action.type) {
@@ -23,30 +24,41 @@ const movieReducer = (state, action) => {
 };
 
 function MoviesContextProvider(props) {
-  const [movies, dispatch] = useReducer(
-    movieReducer,
-    [
-      { name: "Star Wars", id: 1 },
-      { name: "The Lord of the Rings", id: 2 },
-      { name: "Titanic", id: 3 },
-      { name: "Amor Estranho Amor", id: 4 },
-    ],
-    () => {
-      const localData = localStorage.getItem("movies");
+  const [movies, dispatch] = React.useReducer(movieReducer, [], () => {
+    const localData = localStorage.getItem("movies");
 
-      return localData ? JSON.parse(localData) : [];
-    }
-  );
+    return localData ? JSON.parse(localData) : [];
+  });
 
-  useEffect(() => {
+  React.useEffect(() => {
     localStorage.setItem("movies", JSON.stringify(movies));
   }, [movies]);
 
   return (
-    <MoviesContext.Provider value={{ movies, dispatch }}>
-      {props.children}
-    </MoviesContext.Provider>
+    <MoviesStateContext.Provider value={movies}>
+      <MoviesDispatchContext.Provider value={dispatch}>
+        {props.children}
+      </MoviesDispatchContext.Provider>
+    </MoviesStateContext.Provider>
   );
 }
 
-export default MoviesContextProvider;
+function useMoviesState() {
+  const context = React.useContext(MoviesStateContext);
+
+  if (context === undefined) {
+    throw new Error("useMoviesState must be used within a MoviesProvider");
+  }
+  return context;
+}
+
+function useMoviesDispatch() {
+  const context = React.useContext(MoviesDispatchContext);
+
+  if (context === undefined) {
+    throw new Error("useMoviesDispatch must be used within a CountProvider");
+  }
+  return context;
+}
+
+export { MoviesContextProvider, useMoviesState, useMoviesDispatch };

@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { MoviesContext } from "../../contexts";
+import React from "react";
+import { useMoviesDispatch } from "../../contexts";
 
 const MovieDetails = ({ movie }) => {
-  const { dispatch } = useContext(MoviesContext);
+  const dispatch = useMoviesDispatch();
 
   return (
     <li
